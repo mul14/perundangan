@@ -45,7 +45,7 @@ if __name__ == '__main__':
             fi = open(filename, "rb")
             content = fi.read()
             fi.close()
-            new_content = clean1(filename, content)
+            new_content = clean2(filename, content)
             fo = open(filename, "w")
             fo.write(new_content)
             fo.close()
