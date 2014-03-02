@@ -46,6 +46,14 @@ def clean3(filename, content):
         content = content.replace(test, '')
     return content
 
+clean4regex = re.compile("<img src=\"logogar.gif\" border=\"0\">(\s+)?(<br>)?(\s+)?(<br>)?")
+def clean4(filename, content):
+    new_content = clean4regex.sub("", content)
+    if (new_content != content):
+        print filename
+    return new_content
+
+
 if __name__ == '__main__':
     if len(argv) > 1:
         for f in listdir(argv[1]):
@@ -53,7 +61,7 @@ if __name__ == '__main__':
             fi = open(filename, "rb")
             content = fi.read()
             fi.close()
-            new_content = clean3(filename, content)
+            new_content = clean4(filename, content)
             fo = open(filename, "w")
             fo.write(new_content)
             fo.close()
