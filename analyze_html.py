@@ -46,7 +46,7 @@ def clean3(filename, content):
         content = content.replace(test, '')
     return content
 
-clean4regex = re.compile("<img src=\"logogar.gif\" border=\"0\">(\s+)?(<br>)?(\s+)?(<br>)?")
+clean4regex = re.compile("<img src=\"([a-zA-Z\./]+)\" border=\"0\">(\s+)?(<br>)?(\s+)?(<br>)?")
 def clean4(filename, content):
     new_content = clean4regex.sub("", content)
     if (new_content != content):
