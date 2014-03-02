@@ -38,6 +38,15 @@ def clean2(filename, content):
         content = content.replace(test, '')
     return content
 
+def clean3(filename, content):
+    test = """
+    <div class="d3" align="right"></div>
+"""
+    if (test in content):
+        print filename
+        content = content.replace(test, '')
+    return content
+
 if __name__ == '__main__':
     if len(argv) > 1:
         for f in listdir(argv[1]):
@@ -45,7 +54,7 @@ if __name__ == '__main__':
             fi = open(filename, "rb")
             content = fi.read()
             fi.close()
-            new_content = clean2(filename, content)
+            new_content = clean3(filename, content)
             fo = open(filename, "w")
             fo.write(new_content)
             fo.close()
