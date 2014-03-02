@@ -103,11 +103,19 @@ def clean6(filename, content):
 
     return etree.tostring(html_content)
 
+
+#Parse string PASAL XX in <center></center> and replace it with h4
+clean7regex1 = re.compile('Pasal (\d+)(\s+)</center>')
+def clean7(filename, content):
+    print filename
+    content = clean7regex1.sub('</center><h4>Pasal \g<1></h4>', content)
+    return content
+
 def processfile(filename):
     fi = open(filename, "rb")
     content = fi.read()
     fi.close()
-    new_content = clean6(filename, content)
+    new_content = clean7(filename, content)
     fo = open(filename, "w")
     fo.write(new_content)
     fo.close()
