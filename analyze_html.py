@@ -111,11 +111,18 @@ def clean7(filename, content):
     content = clean7regex1.sub('</center><h4>Pasal \g<1></h4>', content)
     return content
 
+clean8regex1 = re.compile("<\/h4>(.*?)<br>\n\n", re.DOTALL)
+def clean8(filename, content):
+    return clean8regex1.sub("</h4><div class=\"sx\">\g<1></div><br>\n\n", content)
+
+def clean9(filename, content):
+    return content.replace('</div><br>', '</div>')
+
 def processfile(filename):
     fi = open(filename, "rb")
     content = fi.read()
     fi.close()
-    new_content = clean7(filename, content)
+    new_content = clean8(filename, content)
     fo = open(filename, "w")
     fo.write(new_content)
     fo.close()
