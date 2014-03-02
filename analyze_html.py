@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 from os import rename, listdir
 from os.path import isfile, join
-from re import match
 from sys import argv
+import re
 from lxml import html, etree
 
 def clean1(filename, content):
@@ -27,21 +27,20 @@ def clean1(filename, content):
         #print content
     return content
         
+clean2regex = re.compile("<div class=\"d3\">\s+<small>\(c\)2010 Ditjen PP :: \|\| \|\|</small>\s+</div>")
 def clean2(filename, content):
     test = """
     <div class="d3">
       <small>(c)2010 Ditjen PP :: || ||</small>
     </div>
 """
-    if (test in content):
+    new_content = clean2regex.sub("", content)
+    if (new_content != content):
         print filename
-        content = content.replace(test, '')
-    return content
+    return new_content
 
 def clean3(filename, content):
-    test = """
-    <div class="d3" align="right"></div>
-"""
+    test = "<div class=\"d3\" align=\"right\"></div>"
     if (test in content):
         print filename
         content = content.replace(test, '')
