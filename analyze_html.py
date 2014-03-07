@@ -118,11 +118,47 @@ def clean8(filename, content):
 def clean9(filename, content):
     return content.replace('</div><br>', '</div>')
 
+clean10regex1 = re.compile('No\.\s?(\d+),\s?(\d{4})')
+def clean10(filename, content):
+    html_content = html.fromstring(content)
+    small = html_content.xpath('//table//small')
+    if (len(small) > 0):
+        small = small[0]
+        if (clean10regex1.match(small.text)):
+            bodies = small.iterancestors('body')
+            print len(bodies)
+            small.getparent().remove(small)
+
+#This will convert group of s14 to OL/LI
+def clean11(filename, content):
+    html_content = html.fromstring(content)
+    sx_parts = html_content.xpath('//div[@class=\'sx\']')
+    tags = []
+    for sx_part in sx_parts:
+        children = sx_part.getchildren()
+        no_extra_text = not any(child.tail and child.tail.strip() for child in children)
+        all_class_s14 = all(child.get('class')  == 's14' for child in children)
+        no_text = sx_part.text and not sx_part.text.strip()
+        if children and no_extra_text and no_text and all_class_s14:
+            tags.append(sx_part)
+
+    if (len(tags) > 0):
+        print filename
+    for sx_part in tags:
+        sx_part.tag = 'ol'
+        for child in sx_part.getchildren():
+            child.tag = 'li'
+
+    return etree.tostring(html_content)
+
+def clean12(filename, content):
+    return content.replace('<br/></div>', '</div>')
+
 def processfile(filename):
     fi = open(filename, "rb")
     content = fi.read()
     fi.close()
-    new_content = clean9(filename, content)
+    new_content = clean12(filename, content)
     fo = open(filename, "w")
     fo.write(new_content)
     fo.close()
